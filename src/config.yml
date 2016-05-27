@@ -1,0 +1,14 @@
+#月付VIP(30天)
+mvip:
+  #价格
+  price: 10
+  #每日成长值
+  points: 5
+#年付VIP(365天)
+yvip:
+  #价格
+  price: 100
+  #购买赠送成长值
+  gift: 50
+  #每日成长值
+  points: 10

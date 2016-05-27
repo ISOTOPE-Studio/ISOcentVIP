@@ -1,0 +1,16 @@
+name: ISOcentVIP
+main: ISOcentVIP.ISOcentVIP
+
+author: Mars
+description: ISOcentVIP
+website: http://isotopestudio.cc
+version: 1.0.0
+depend: [PlayerPoints]
+commands:
+  vipadmin:
+    description: ISOcentVIP Admin command
+    usage: /<command> - Get Information
+    aliases: vipa
+  vip:
+    description: ISOcentVIP command
+    usage: /<command> - Get Information
