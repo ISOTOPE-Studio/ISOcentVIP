@@ -42,6 +42,7 @@ public class SqlManager {
             ISOcentVIP.statement.executeUpdate(
                     "CREATE TABLE IF NOT EXISTS vip(" +
                             " player CHAR(20) NOT NULL PRIMARY KEY," +
+                            " points INT NOT NULL," +
                             " days INT NOT NULL," +
                             " type TEXT NOT NULL" +
                             " );");

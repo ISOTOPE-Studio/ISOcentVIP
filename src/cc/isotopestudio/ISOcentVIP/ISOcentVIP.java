@@ -1,5 +1,7 @@
 package cc.isotopestudio.ISOcentVIP;
 
+import cc.isotopestudio.ISOcentVIP.command.VIPadminCommand;
+import cc.isotopestudio.ISOcentVIP.data.Settings;
 import cc.isotopestudio.ISOcentVIP.sql.MySQL;
 import cc.isotopestudio.ISOcentVIP.sql.SqlManager;
 import org.black_ixx.playerpoints.PlayerPoints;
@@ -21,7 +23,7 @@ import java.sql.Statement;
  */
 public class ISOcentVIP extends JavaPlugin {
     public static final String prefix = (new StringBuilder()).append(ChatColor.GOLD).append(ChatColor.BOLD).append("[")
-            .append("副本房间").append("]").append(ChatColor.GREEN).toString();
+            .append("VIP").append("]").append(ChatColor.GREEN).toString();
     public static final String pluginName = "ISOcentVIP";
     public static ISOcentVIP plugin;
 
@@ -65,6 +67,11 @@ public class ISOcentVIP extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+
+        Settings.update();
+
+        this.getCommand("vipadmin").setExecutor(new VIPadminCommand());
+        //this.getCommand("vip").setExecutor(new VIPCommand());
 
         getLogger().info(pluginName + "成功加载!");
         getLogger().info(pluginName + "由ISOTOPE Studio制作!");
