@@ -1,6 +1,6 @@
 package cc.isotopestudio.ISOcentVIP.Util;
 
-import cc.isotopestudio.Crack.Crack;
+import cc.isotopestudio.ISOcentVIP.ISOcentVIP;
 import org.bukkit.ChatColor;
 
 public class S {
@@ -50,19 +50,19 @@ public class S {
     }
 
     public static String toPrefixRed(String s) {
-        return Crack.prefix + ChatColor.RED + s + ChatColor.RESET;
+        return ISOcentVIP.prefix + ChatColor.RED + s + ChatColor.RESET;
     }
 
     public static String toPrefixGreen(String s) {
-        return Crack.prefix + ChatColor.GREEN + s + ChatColor.RESET;
+        return ISOcentVIP.prefix + ChatColor.GREEN + s + ChatColor.RESET;
     }
 
     public static String toPrefixYellow(String s) {
-        return Crack.prefix + ChatColor.YELLOW + s + ChatColor.RESET;
+        return ISOcentVIP.prefix + ChatColor.YELLOW + s + ChatColor.RESET;
     }
 
     public static String toPrefixGray(String s) {
-        return Crack.prefix + ChatColor.GRAY + s + ChatColor.RESET;
+        return ISOcentVIP.prefix + ChatColor.GRAY + s + ChatColor.RESET;
     }
 
     public static String toBoldRed(String s) {
@@ -70,6 +70,6 @@ public class S {
     }
 
     public static String toPrefixAqua(String s) {
-        return Crack.prefix + ChatColor.AQUA + s + ChatColor.RESET;
+        return ISOcentVIP.prefix + ChatColor.AQUA + s + ChatColor.RESET;
     }
 }

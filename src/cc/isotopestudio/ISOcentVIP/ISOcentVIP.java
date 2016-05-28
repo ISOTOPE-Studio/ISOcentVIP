@@ -1,5 +1,7 @@
 package cc.isotopestudio.ISOcentVIP;
 
+import cc.isotopestudio.ISOcentVIP.sql.MySQL;
+import cc.isotopestudio.ISOcentVIP.sql.SqlManager;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -9,6 +11,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Statement;
 
 
 /**
@@ -18,16 +22,35 @@ import java.io.IOException;
 public class ISOcentVIP extends JavaPlugin {
     public static final String prefix = (new StringBuilder()).append(ChatColor.GOLD).append(ChatColor.BOLD).append("[")
             .append("副本房间").append("]").append(ChatColor.GREEN).toString();
-    private static final String pluginName = "ISOcentVIP";
+    public static final String pluginName = "ISOcentVIP";
     public static ISOcentVIP plugin;
+
+
+    // mySQL
+    public static MySQL mySQL;
+    public static Connection c;
+    public static Statement statement;
 
     @Override
     public void onEnable() {
+        plugin = this;
         if (!hookPlayerPoints()) {
-            getLogger().info( "PlayerPoints 插件出错！");
+            getLogger().info("PlayerPoints 插件出错！");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+
+        if (!SqlManager.connectMySQL()) {
+            getLogger().severe(pluginName + "无法加载!");
+            getLogger().severe("数据库无法连接！");
+            this.getPluginLoader().disablePlugin(this);
+        }
+        if (!SqlManager.createTables()) {
+            getLogger().severe(pluginName + "无法加载!");
+            getLogger().severe("数据库创建失败！");
+            this.getPluginLoader().disablePlugin(this);
+        }
+
         getLogger().info("加载文件...");
         plugin = this;
         File file;

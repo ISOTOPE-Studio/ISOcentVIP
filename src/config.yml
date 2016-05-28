@@ -1,9 +1,17 @@
+mySQL:
+  host: localhost
+  port: 3306
+  user: root
+  password: root
+  database: vip
 #月付VIP(30天)
 mvip:
   #价格
   price: 10
   #每日成长值
   points: 5
+  #每日降低成长值
+  decrease: 2
 #年付VIP(365天)
 yvip:
   #价格
@@ -12,3 +20,10 @@ yvip:
   gift: 50
   #每日成长值
   points: 10
+
+level:
+#VIP2所需成长值
+- 200
+#VIP3所需成长值
+- 500
+#继续添加...
