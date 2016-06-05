@@ -5,15 +5,13 @@ import cc.isotopestudio.ISOcentVIP.command.VIPadminCommand;
 import cc.isotopestudio.ISOcentVIP.data.Settings;
 import cc.isotopestudio.ISOcentVIP.sql.MySQL;
 import cc.isotopestudio.ISOcentVIP.sql.SqlManager;
+import cc.isotopestudio.ISOcentVIP.task.DailyUpdateTask;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
 
@@ -43,17 +41,6 @@ public class ISOcentVIP extends JavaPlugin {
             return;
         }
 
-        if (!SqlManager.connectMySQL()) {
-            getLogger().severe(pluginName + "无法加载!");
-            getLogger().severe("数据库无法连接！");
-            this.getPluginLoader().disablePlugin(this);
-        }
-        if (!SqlManager.createTables()) {
-            getLogger().severe(pluginName + "无法加载!");
-            getLogger().severe("数据库创建失败！");
-            this.getPluginLoader().disablePlugin(this);
-        }
-
         getLogger().info("加载文件...");
         plugin = this;
         File file;
@@ -61,15 +48,22 @@ public class ISOcentVIP extends JavaPlugin {
         if (!file.exists()) {
             saveDefaultConfig();
         }
-        try {
-            getPlayerData().save(playerDataFile);
-        } catch (IOException e) {
-            getLogger().info("文件出错！");
-            getServer().getPluginManager().disablePlugin(this);
+
+        if (!SqlManager.connectMySQL()) {
+            getLogger().severe(pluginName + "无法加载!");
+            getLogger().severe("数据库无法连接！");
+            this.getPluginLoader().disablePlugin(this);
+            return;
+        }
+        if (!SqlManager.createTables()) {
+            getLogger().severe(pluginName + "无法加载!");
+            getLogger().severe("数据库创建失败！");
+            this.getPluginLoader().disablePlugin(this);
             return;
         }
 
         Settings.update();
+        new DailyUpdateTask().runTaskLater(this, 20);
 
         this.getCommand("vipadmin").setExecutor(new VIPadminCommand());
         this.getCommand("vip").setExecutor(new VIPCommand());
@@ -91,39 +85,5 @@ public class ISOcentVIP extends JavaPlugin {
         final Plugin plugin = this.getServer().getPluginManager().getPlugin("PlayerPoints");
         playerPoints = PlayerPoints.class.cast(plugin);
         return playerPoints != null;
-    }
-
-    public PlayerPoints getPlayerPoints() {
-        return playerPoints;
-    }
-
-    // Files
-
-    private File playerDataFile = null;
-    private FileConfiguration playerData = null;
-
-    public void reloadPlayerData() {
-        if (playerDataFile == null) {
-            playerDataFile = new File(getDataFolder(), "players.yml");
-        }
-        playerData = YamlConfiguration.loadConfiguration(playerDataFile);
-    }
-
-    public FileConfiguration getPlayerData() {
-        if (playerData == null) {
-            reloadPlayerData();
-        }
-        return playerData;
-    }
-
-    public void savePlayerData() {
-        if (playerData == null || playerDataFile == null) {
-            return;
-        }
-        try {
-            getPlayerData().save(playerDataFile);
-        } catch (IOException ex) {
-            getLogger().info("玩家文件保存失败！");
-        }
     }
 }

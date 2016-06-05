@@ -1,17 +1,19 @@
 package cc.isotopestudio.ISOcentVIP.data;
 
 import cc.isotopestudio.ISOcentVIP.type.VIPType;
+import net.milkbowl.vault.permission.Permission;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static cc.isotopestudio.ISOcentVIP.ISOcentVIP.c;
-import static cc.isotopestudio.ISOcentVIP.ISOcentVIP.statement;
+import static cc.isotopestudio.ISOcentVIP.ISOcentVIP.*;
 
 /**
  * Created by Mars on 5/27/2016.
@@ -20,14 +22,34 @@ import static cc.isotopestudio.ISOcentVIP.ISOcentVIP.statement;
 public class PlayerData {
     private final static SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
 
-    public static void addDays(String playerName, int days) {
+    /*
+    true: become year VIP
+    false: other conditions
+    */
+    public static boolean addDays(String playerName, int days) {
         int remains = getRemainDays(playerName);
         setRemainDays(playerName, remains + days);
-        if (remains + days > 365)
+        if (remains + days > 365) {
             setVIPType(playerName, VIPType.yVIP);
-        else
+            if (remains < 365) {
+                addPoints(playerName, Settings.yVIPGift);
+                return true;
+            }
+        } else
             setVIPType(playerName, VIPType.mVIP);
+        return false;
+    }
 
+    public static Permission perms = null;
+
+    public static void addPoints(String playerName, int points) {
+        RegisteredServiceProvider<Permission> rsp = plugin.getServer().getServicesManager().getRegistration(Permission.class);
+        perms = rsp.getProvider();
+        int lvl = getLvl(playerName);
+        setPoints(playerName, getPoints(playerName) + points);
+        if (getLvl(playerName) != lvl) {
+            perms.playerAddGroup(playerName, "world", "group");
+        }
     }
 
     public static int getPoints(String playerName) {
@@ -66,7 +88,7 @@ public class PlayerData {
     public static int getLvl(String playerName) {
         int points = getPoints(playerName);
         int lvl = 0;
-        while (Settings.level.size() > lvl && points > Settings.level.get(lvl)) {
+        while (Settings.level.size() > lvl && points >= Settings.level.get(lvl)) {
             lvl++;
         }
         return lvl;
@@ -127,7 +149,7 @@ public class PlayerData {
         return format.format(expire);
     }
 
-    private static void setVIPType(String playerName, VIPType type) {
+    public static void setVIPType(String playerName, VIPType type) {
         try {
             ResultSet res = statement.executeQuery("SELECT * FROM vip WHERE player=" + "\"" + playerName + "\"" + ";");
             PreparedStatement statement;
@@ -160,6 +182,32 @@ public class PlayerData {
             return VIPType.NONE;
         }
     }
+
+    public static List<String> getVIPs(VIPType type) {
+        ResultSet res = null;
+        List<String> result = new ArrayList<>();
+        try {
+            switch (type) {
+                case mVIP: {
+                    res = statement.executeQuery("SELECT * FROM vip WHERE type=\"mVIP\";");
+                    break;
+                }
+                case yVIP: {
+                    res = statement.executeQuery("SELECT * FROM vip WHERE type=\"yVIP\";");
+                    break;
+                }
+                case NONE:
+                    res = statement.executeQuery("SELECT * FROM vip WHERE type=\"NONE\";");
+                    break;
+            }
+            while (res.next()) {
+                result.add(res.getString("player"));
+            }
+        } catch (SQLException e) {
+        }
+        return result;
+    }
+
 
     public static List<String> getRank(int count) {
         return null;

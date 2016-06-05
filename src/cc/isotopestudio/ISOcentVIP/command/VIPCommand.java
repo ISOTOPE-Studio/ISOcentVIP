@@ -48,7 +48,10 @@ public class VIPCommand implements CommandExecutor {
                         }
                     }
                     if (plugin.playerPoints.getAPI().take(player.getName(), Settings.mVIPPrice)) {
-                        PlayerData.addDays(player.getName(), 30 * month);
+                        if (PlayerData.addDays(player.getName(), 30 * month)) {
+                            player.sendMessage(S.toPrefixGreen("升级年费VIP"));
+                            player.sendMessage(S.toPrefixGreen("获得" + Settings.yVIPPrice + "成长值奖励"));
+                        }
                         player.sendMessage(S.toPrefixGreen("成功购买"));
                     } else {
                         player.sendMessage(S.toPrefixGreen("余额不足"));
@@ -65,14 +68,20 @@ public class VIPCommand implements CommandExecutor {
                     }
                     if (plugin.playerPoints.getAPI().take(player.getName(), Settings.yVIPPrice)) {
                         PlayerData.addDays(player.getName(), 365 * year);
+                        player.sendMessage(S.toPrefixGreen("获得" + Settings.yVIPPrice + "成长值奖励"));
                         player.sendMessage(S.toPrefixGreen("成功购买"));
                     } else {
                         player.sendMessage(S.toPrefixRed("余额不足"));
                     }
                     return true;
                 }
-                player.sendMessage(S.toBoldGreen("/" + label + " buy month [月数]") + S.toGray(" - ") + S.toGold("设置玩家成长值"));
-                player.sendMessage(S.toBoldGreen("/" + label + " buy year [年数]") + S.toGray(" - ") + S.toGold("设置玩家成长值"));
+                if (args.length > 2 && args[1].equals("points")) {
+
+                    return true;
+                }
+                player.sendMessage(S.toBoldGreen("/" + label + " buy month [月数]") + S.toGray(" - ") + S.toGold("购买月付VIP"));
+                player.sendMessage(S.toBoldGreen("/" + label + " buy year [年数]") + S.toGray(" - ") + S.toGold("购买年付VIP"));
+                player.sendMessage(S.toBoldGreen("/" + label + " buy point <成长值>") + S.toGray(" - ") + S.toGold("购买成长值"));
                 return true;
             }
             sendInfo(player, label);
