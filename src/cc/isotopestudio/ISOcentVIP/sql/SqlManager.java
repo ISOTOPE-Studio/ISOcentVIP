@@ -46,6 +46,11 @@ public class SqlManager {
                             " days INT NOT NULL," +
                             " type TEXT NOT NULL" +
                             " );");
+            ISOcentVIP.statement.executeUpdate(
+                    "CREATE TABLE IF NOT EXISTS info(" +
+                            " k CHAR(20) NOT NULL PRIMARY KEY," +
+                            " v DATE NOT NULL" +
+                            " );");
         } catch (SQLException e) {
             e.printStackTrace();
             plugin.getLogger().info(ISOcentVIP.pluginName + "Êý¾Ý¿â³ö´í Error4");

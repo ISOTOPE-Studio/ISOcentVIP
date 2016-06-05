@@ -19,5 +19,14 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="mysql-connector-java-5.1.39-bin" level="application" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../Spigot/server/plugins/Vault.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
