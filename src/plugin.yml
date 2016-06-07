@@ -6,6 +6,7 @@ description: ISOcentVIP
 website: http://isotopestudio.cc
 version: 1.0.0
 depend: [PlayerPoints]
+softdepend: [PlaceholderAPI]
 commands:
   vipadmin:
     description: ISOcentVIP Admin command
