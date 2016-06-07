@@ -3,10 +3,12 @@ package cc.isotopestudio.ISOcentVIP;
 import cc.isotopestudio.ISOcentVIP.command.VIPCommand;
 import cc.isotopestudio.ISOcentVIP.command.VIPadminCommand;
 import cc.isotopestudio.ISOcentVIP.data.Settings;
+import cc.isotopestudio.ISOcentVIP.hook.PlaceholderAPI.VIPPlaceHolder;
 import cc.isotopestudio.ISOcentVIP.sql.MySQL;
 import cc.isotopestudio.ISOcentVIP.sql.SqlManager;
 import cc.isotopestudio.ISOcentVIP.task.DailyUpdateTask;
 import org.black_ixx.playerpoints.PlayerPoints;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -31,6 +33,7 @@ public class ISOcentVIP extends JavaPlugin {
     public static MySQL mySQL;
     public static Connection c;
     public static Statement statement;
+    private boolean usePlaceholderAPI;
 
     @Override
     public void onEnable() {
@@ -60,6 +63,13 @@ public class ISOcentVIP extends JavaPlugin {
             getLogger().severe("数据库创建失败！");
             this.getPluginLoader().disablePlugin(this);
             return;
+        }
+
+        usePlaceholderAPI = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
+
+        if (usePlaceholderAPI) {
+            getLogger().info("PlaceholderAPI 连接");
+            new VIPPlaceHolder().hook();
         }
 
         Settings.update();
