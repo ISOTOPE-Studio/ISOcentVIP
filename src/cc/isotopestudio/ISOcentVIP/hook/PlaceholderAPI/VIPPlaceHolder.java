@@ -25,11 +25,17 @@ public class VIPPlaceHolder extends EZPlaceholderHook {
         if (player == null)
             return null;
         if (identifier.equals("points"))
-            return "" + PlayerData.getPoints(player.getName());
+            return String.valueOf(PlayerData.getPoints(player.getName()));
         if (identifier.equals("days"))
-            return "" + PlayerData.getRemainDays(player.getName());
+            return String.valueOf(PlayerData.getRemainDays(player.getName()));
         if (identifier.equals("expiredate"))
-            return "" + PlayerData.getExpireDate(player.getName());
+            return String.valueOf(PlayerData.getExpireDate(player.getName()));
+        if (identifier.equals("level"))
+            return String.valueOf(PlayerData.getLvl(player.getName()));
+        if (identifier.equals("type"))
+            return PlayerData.getVIPType(player.getName()).getName();
+        if (identifier.equals("nextlvlpoints"))
+            return String.valueOf(PlayerData.getNextLvlPoints(player.getName()));
         return null;
     }
 }

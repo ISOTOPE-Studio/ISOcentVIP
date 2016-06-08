@@ -1,8 +1,6 @@
 package cc.isotopestudio.ISOcentVIP.data;
 
 import cc.isotopestudio.ISOcentVIP.type.VIPType;
-import net.milkbowl.vault.permission.Permission;
-import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,16 +38,9 @@ public class PlayerData {
         return false;
     }
 
-    public static Permission perms = null;
-
     public static void addPoints(String playerName, int points) {
-        RegisteredServiceProvider<Permission> rsp = plugin.getServer().getServicesManager().getRegistration(Permission.class);
-        perms = rsp.getProvider();
         int lvl = getLvl(playerName);
         setPoints(playerName, getPoints(playerName) + points);
-        if (getLvl(playerName) != lvl) {
-            perms.playerAddGroup(playerName, "world", "group");
-        }
     }
 
     public static int getPoints(String playerName) {
@@ -65,6 +56,7 @@ public class PlayerData {
     }
 
     public static void setPoints(String playerName, int points) {
+        int lvl = getLvl(playerName);
         try {
             ResultSet res = statement.executeQuery("SELECT * FROM vip WHERE player=" + "\"" + playerName + "\"" + ";");
             PreparedStatement statement;
@@ -81,29 +73,49 @@ public class PlayerData {
             }
             statement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+        }
+        if (getLvl(playerName) != lvl) {
+            switch (getVIPType(playerName)) {
+                case mVIP: {
+                    perms.playerAddGroup(playerName, "world", Settings.mVIPGroup.get(getLvl(playerName)));
+                    break;
+                }
+                case yVIP: {
+                    perms.playerAddGroup(playerName, "world", Settings.yVIPGroup.get(getLvl(playerName)));
+                    break;
+                }
+                case NONE: {
+                    perms.playerAddGroup(playerName, "world", Settings.defaultgroup);
+                    break;
+                }
+            }
         }
     }
 
     public static int getLvl(String playerName) {
         int points = getPoints(playerName);
-        int lvl = 0;
-        while (Settings.level.size() > lvl && points >= Settings.level.get(lvl)) {
-            lvl++;
+        if (points == 0)
+            return 0;
+        int lvl = -1;
+        int maxLvl = Settings.level.size();
+
+        if (points > Settings.level.get(maxLvl - 1))
+            return maxLvl;
+
+        int pointReq = Settings.level.get(0);
+        while (++lvl < maxLvl - 1 && points >= pointReq) {
+            pointReq = Settings.level.get(lvl + 1);
         }
         return lvl;
     }
 
     public static int getLvlReqPoints(String playerName) {
-        int lvl = getLvl(playerName);
-        if (Settings.level.size() <= lvl)
-            return -1;
-        return Settings.level.get(lvl + 1) - getPoints(playerName);
+        return getNextLvlPoints(playerName) - getPoints(playerName);
     }
 
     public static int getNextLvlPoints(String playerName) {
         int lvl = getLvl(playerName);
-        if (Settings.level.size() <= lvl)
+        if (Settings.level.size() <= lvl + 1)
             return -1;
         return Settings.level.get(lvl + 1);
     }
@@ -173,7 +185,7 @@ public class PlayerData {
     public static VIPType getVIPType(String playerName) {
         ResultSet res;
         try {
-            res = statement.executeQuery("select * from vip where player=" + "\"" + playerName + "\"" + ";");
+            res = statement.executeQuery("SELECT * FROM vip WHERE player=" + "\"" + playerName + "\"" + ";");
             if (!res.next())
                 return VIPType.NONE;
             ;
@@ -210,6 +222,17 @@ public class PlayerData {
 
 
     public static List<String> getRank(int count) {
-        return null;
+        ResultSet res;
+        List<String> result = new ArrayList<>();
+        int i = 0;
+        try {
+            res = statement.executeQuery("SELECT * FROM vip ORDER BY points desc;");
+            while (res.next() && i < count) {
+                result.add(res.getString("player"));
+                i++;
+            }
+        } catch (SQLException ignored) {
+        }
+        return result;
     }
 }

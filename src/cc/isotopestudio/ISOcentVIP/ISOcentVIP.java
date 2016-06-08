@@ -7,10 +7,13 @@ import cc.isotopestudio.ISOcentVIP.hook.PlaceholderAPI.VIPPlaceHolder;
 import cc.isotopestudio.ISOcentVIP.sql.MySQL;
 import cc.isotopestudio.ISOcentVIP.sql.SqlManager;
 import cc.isotopestudio.ISOcentVIP.task.DailyUpdateTask;
+import net.milkbowl.vault.Vault;
+import net.milkbowl.vault.permission.Permission;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -28,6 +31,9 @@ public class ISOcentVIP extends JavaPlugin {
     public static final String pluginName = "ISOcentVIP";
     public static ISOcentVIP plugin;
 
+    private Vault vault;
+    RegisteredServiceProvider<Permission> rsp;
+    public static Permission perms;
 
     // mySQL
     public static MySQL mySQL;
@@ -38,6 +44,20 @@ public class ISOcentVIP extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+
+        this.vault = (Vault) this.getServer().getPluginManager().getPlugin("Vault");
+        if (this.vault != null) {
+            RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+            if (rsp != null) {
+                perms = rsp.getProvider();
+                this.getLogger().info("Economy Enabled.");
+            } else if (rsp == null) {
+                this.getLogger().info("No economy plugin detected.");
+                getServer().getPluginManager().disablePlugin(this);
+                return;
+            }
+        }
+
         if (!hookPlayerPoints()) {
             getLogger().info("PlayerPoints ²å¼þ³ö´í£¡");
             getServer().getPluginManager().disablePlugin(this);

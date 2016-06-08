@@ -2,6 +2,7 @@ package cc.isotopestudio.ISOcentVIP.command;
 
 import cc.isotopestudio.ISOcentVIP.Util.S;
 import cc.isotopestudio.ISOcentVIP.data.PlayerData;
+import cc.isotopestudio.ISOcentVIP.data.Settings;
 import cc.isotopestudio.ISOcentVIP.type.VIPType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -43,9 +44,13 @@ public class VIPadminCommand implements CommandExecutor {
                 PlayerData.addDays(args[1], points);
                 return true;
             }
-            if (args[0].equalsIgnoreCase("addpoints") && args.length > 2) {
+            if (args[0].equalsIgnoreCase("setpoints") && args.length > 2) {
                 int points = Integer.parseInt(args[2]);
                 PlayerData.setPoints(args[1], points);
+                return true;
+            }
+            if (args[0].equalsIgnoreCase("info")) {
+                sender.sendMessage(Settings.info());
                 return true;
             }
             sendHelpPage1(sender, label);
@@ -58,6 +63,6 @@ public class VIPadminCommand implements CommandExecutor {
         player.sendMessage(S.toPrefixGreen("帮助菜单 第 1 页"));
         player.sendMessage(S.toBoldGreen("/" + label + " info <玩家名字>") + S.toGray(" - ") + S.toGold("查看玩家信息"));
         player.sendMessage(S.toBoldGreen("/" + label + " adddays <玩家名字> <天数>") + S.toGray(" - ") + S.toGold("设置玩家成长值"));
-        player.sendMessage(S.toBoldGreen("/" + label + " addpoints <玩家名字> <成长点>") + S.toGray(" - ") + S.toGold("设置玩家成长值"));
+        player.sendMessage(S.toBoldGreen("/" + label + " setpoints <玩家名字> <成长点>") + S.toGray(" - ") + S.toGold("设置玩家成长值"));
     }
 }

@@ -11,6 +11,13 @@ mvip:
   price: 10
   #每日成长值
   points: 5
+  #权限组
+  group:
+  - group1
+  - group2
+  - group3
+  - group4
+  - group5
 
 #年付VIP(365天)
 yvip:
@@ -20,13 +27,31 @@ yvip:
   gift: 50
   #每日成长值
   points: 10
-  #每日降低成长值
+  #权限组
+  group:
+  - group1
+  - group2
+  - group3
+  - group4
+  - group5
 
+#默认权限组
+defaultgroup: group
+
+#每日降低成长值
 decrease: 2
 
+#成长值单价(如1点卷获得100成长值)
+pointsprice: 1
+points: 100
+
 level:
+#VIP1所需成长值
+- 0
 #VIP2所需成长值
 - 200
 #VIP3所需成长值
 - 500
+#VIP4所需成长值
+- 1000
 #继续添加...
