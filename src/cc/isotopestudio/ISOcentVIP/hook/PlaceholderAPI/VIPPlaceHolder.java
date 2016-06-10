@@ -36,6 +36,14 @@ public class VIPPlaceHolder extends EZPlaceholderHook {
             return PlayerData.getVIPType(player.getName()).getName();
         if (identifier.equals("nextlvlpoints"))
             return String.valueOf(PlayerData.getNextLvlPoints(player.getName()));
+        if (identifier.startsWith("rank")) {
+            try {
+                int count = Integer.parseInt(identifier.substring(4));
+                return String.valueOf(PlayerData.getRank(count).get(count - 1));
+            } catch (Exception e) {
+                return "无法排名, 格式错误";
+            }
+        }
         return null;
     }
 }
