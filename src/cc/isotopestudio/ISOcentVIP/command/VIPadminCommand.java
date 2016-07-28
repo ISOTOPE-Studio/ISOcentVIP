@@ -1,6 +1,6 @@
 package cc.isotopestudio.ISOcentVIP.command;
 
-import cc.isotopestudio.ISOcentVIP.Util.S;
+import cc.isotopestudio.ISOcentVIP.util.S;
 import cc.isotopestudio.ISOcentVIP.data.PlayerData;
 import cc.isotopestudio.ISOcentVIP.data.Settings;
 import cc.isotopestudio.ISOcentVIP.type.VIPType;
@@ -61,8 +61,8 @@ public class VIPadminCommand implements CommandExecutor {
 
     private void sendHelpPage1(CommandSender player, String label) {
         player.sendMessage(S.toPrefixGreen("帮助菜单 第 1 页"));
-        player.sendMessage(S.toBoldGreen("/" + label + " info <玩家名字>") + S.toGray(" - ") + S.toGold("查看玩家信息"));
-        player.sendMessage(S.toBoldGreen("/" + label + " adddays <玩家名字> <天数>") + S.toGray(" - ") + S.toGold("设置玩家成长值"));
-        player.sendMessage(S.toBoldGreen("/" + label + " setpoints <玩家名字> <成长点>") + S.toGray(" - ") + S.toGold("设置玩家成长值"));
+        player.sendMessage(S.toGreen("/" + label + " info <玩家名字>") + S.toGray(" - ") + S.toGold("查看玩家信息"));
+        player.sendMessage(S.toGreen("/" + label + " adddays <玩家名字> <天数>") + S.toGray(" - ") + S.toGold("设置玩家成长值"));
+        player.sendMessage(S.toGreen("/" + label + " setpoints <玩家名字> <成长点>") + S.toGray(" - ") + S.toGold("设置玩家成长值"));
     }
 }

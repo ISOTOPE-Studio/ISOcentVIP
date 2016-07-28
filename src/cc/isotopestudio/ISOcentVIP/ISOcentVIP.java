@@ -31,27 +31,24 @@ public class ISOcentVIP extends JavaPlugin {
     public static final String pluginName = "ISOcentVIP";
     public static ISOcentVIP plugin;
 
-    private Vault vault;
-    RegisteredServiceProvider<Permission> rsp;
     public static Permission perms;
 
     // mySQL
     public static MySQL mySQL;
     public static Connection c;
     public static Statement statement;
-    private boolean usePlaceholderAPI;
 
     @Override
     public void onEnable() {
         plugin = this;
 
-        this.vault = (Vault) this.getServer().getPluginManager().getPlugin("Vault");
-        if (this.vault != null) {
+        Vault vault = (Vault) this.getServer().getPluginManager().getPlugin("Vault");
+        if (!(vault == null)) {
             RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
             if (rsp != null) {
                 perms = rsp.getProvider();
                 this.getLogger().info("Economy Enabled.");
-            } else if (rsp == null) {
+            } else {
                 this.getLogger().info("No economy plugin detected.");
                 getServer().getPluginManager().disablePlugin(this);
                 return;
@@ -85,7 +82,7 @@ public class ISOcentVIP extends JavaPlugin {
             return;
         }
 
-        usePlaceholderAPI = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
+        boolean usePlaceholderAPI = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
 
         if (usePlaceholderAPI) {
             getLogger().info("PlaceholderAPI Á¬½Ó");

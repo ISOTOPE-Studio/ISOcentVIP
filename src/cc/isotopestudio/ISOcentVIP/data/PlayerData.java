@@ -27,7 +27,7 @@ public class PlayerData {
     public static boolean addDays(String playerName, int days) {
         int remains = getRemainDays(playerName);
         setRemainDays(playerName, remains + days);
-        if (remains + days > 365) {
+        if (remains + days >= 365) {
             setVIPType(playerName, VIPType.yVIP);
             if (remains < 365) {
                 addPoints(playerName, Settings.yVIPGift);
@@ -39,7 +39,6 @@ public class PlayerData {
     }
 
     public static void addPoints(String playerName, int points) {
-        int lvl = getLvl(playerName);
         setPoints(playerName, getPoints(playerName) + points);
     }
 
@@ -72,7 +71,7 @@ public class PlayerData {
                 statement.setString(2, playerName);
             }
             statement.execute();
-        } catch (SQLException e) {
+        } catch (SQLException ignored) {
         }
         if (getLvl(playerName) != lvl) {
             switch (getVIPType(playerName)) {
@@ -188,7 +187,6 @@ public class PlayerData {
             res = statement.executeQuery("SELECT * FROM vip WHERE player=" + "\"" + playerName + "\"" + ";");
             if (!res.next())
                 return VIPType.NONE;
-            ;
             return VIPType.valueOf(res.getString("type"));
         } catch (SQLException e) {
             return VIPType.NONE;
@@ -215,7 +213,7 @@ public class PlayerData {
             while (res.next()) {
                 result.add(res.getString("player"));
             }
-        } catch (SQLException e) {
+        } catch (SQLException ignored) {
         }
         return result;
     }

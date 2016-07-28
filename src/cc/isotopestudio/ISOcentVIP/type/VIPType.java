@@ -1,13 +1,13 @@
 package cc.isotopestudio.ISOcentVIP.type;
 
-import cc.isotopestudio.ISOcentVIP.Util.S;
+import cc.isotopestudio.ISOcentVIP.util.S;
 
 /**
  * Created by Mars on 5/27/2016.
  * Copyright ISOTOPE Studio
  */
 public enum VIPType {
-    mVIP(S.toBoldDarkGreen("月付VIP")), yVIP(S.toBoldGold("年付VIP")), NONE(S.toGray("无VIP"));
+    mVIP("§7月费VIP"), yVIP("§7年费VIP"), NONE(S.toGray("无VIP"));
     final String name;
 
     VIPType(String name) {

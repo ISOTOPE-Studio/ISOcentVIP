@@ -25,21 +25,19 @@ public class Settings {
     public static List<String> yVIPGroup;
 
     public static String info() {
-        final StringBuffer sb = new StringBuffer("Settings{");
-        sb.append("mVIPPrice=").append(mVIPPrice);
-        sb.append(", mVIPPoints=").append(mVIPPoints);
-        sb.append(", yVIPPrice=").append(yVIPPrice);
-        sb.append(", yVIPPoints=").append(yVIPPoints);
-        sb.append(", yVIPGift=").append(yVIPGift);
-        sb.append(", decrease=").append(decrease);
-        sb.append(", pointsPrice=").append(pointsPrice);
-        sb.append(", points=").append(points);
-        sb.append(", defaultgroup='").append(defaultgroup).append('\'');
-        sb.append(", level=").append(level);
-        sb.append(", mVIPGroup=").append(mVIPGroup);
-        sb.append(", yVIPGroup=").append(yVIPGroup);
-        sb.append('}');
-        return sb.toString();
+        return "Settings{" + "mVIPPrice=" + mVIPPrice +
+                ", mVIPPoints=" + mVIPPoints +
+                ", yVIPPrice=" + yVIPPrice +
+                ", yVIPPoints=" + yVIPPoints +
+                ", yVIPGift=" + yVIPGift +
+                ", decrease=" + decrease +
+                ", pointsPrice=" + pointsPrice +
+                ", points=" + points +
+                ", defaultgroup='" + defaultgroup + '\'' +
+                ", level=" + level +
+                ", mVIPGroup=" + mVIPGroup +
+                ", yVIPGroup=" + yVIPGroup +
+                '}';
     }
 
     public static void update() {
