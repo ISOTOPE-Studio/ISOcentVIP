@@ -23,12 +23,12 @@ public class VIPCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("vip")) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(S.toPrefixRed("必须要玩家才能执行"));
+                sender.sendMessage(S.toRed("必须要玩家才能执行"));
                 return true;
             }
             /*
             if (!sender.hasPermission("vip.user")) {
-                sender.sendMessage(S.toPrefixRed("你没有权限"));
+                sender.sendMessage(S.toRed("你没有权限"));
                 return true;
             }
 
@@ -53,12 +53,12 @@ public class VIPCommand implements CommandExecutor {
                     }
                     if (plugin.playerPoints.getAPI().take(player.getName(), Settings.mVIPPrice)) {
                         if (PlayerData.addDays(player.getName(), 30 * month)) {
-                            player.sendMessage(S.toPrefixGreen("升级年费VIP"));
-                            player.sendMessage(S.toPrefixGreen("获得" + Settings.yVIPPrice + "成长值奖励"));
+                            player.sendMessage(S.toGreen("升级年费VIP"));
+                            player.sendMessage(S.toGreen("获得" + Settings.yVIPGift + "成长值奖励"));
                         }
-                        player.sendMessage(S.toPrefixGreen("成功购买"));
+                        player.sendMessage(S.toGreen("成功购买"));
                     } else {
-                        player.sendMessage(S.toPrefixGreen("余额不足"));
+                        player.sendMessage(S.toGreen("余额不足"));
                     }
                     return true;
                 }
@@ -72,10 +72,10 @@ public class VIPCommand implements CommandExecutor {
                     }
                     if (plugin.playerPoints.getAPI().take(player.getName(), Settings.yVIPPrice)) {
                         PlayerData.addDays(player.getName(), 365 * year);
-                        player.sendMessage(S.toPrefixGreen("获得" + Settings.yVIPGift + "成长值奖励"));
-                        player.sendMessage(S.toPrefixGreen("成功购买"));
+                        player.sendMessage(S.toGreen("获得" + Settings.yVIPGift + "成长值奖励"));
+                        player.sendMessage(S.toGreen("成功购买"));
                     } else {
-                        player.sendMessage(S.toPrefixRed("余额不足"));
+                        player.sendMessage(S.toRed("余额不足"));
                     }
                     return true;
                 }
@@ -89,9 +89,9 @@ public class VIPCommand implements CommandExecutor {
                     }
                     if (plugin.playerPoints.getAPI().take(player.getName(), a * Settings.pointsPrice)) {
                         PlayerData.addPoints(player.getName(), a * Settings.points);
-                        player.sendMessage(S.toPrefixGreen("成功购买 " + a * Settings.points + " 成长值"));
+                        player.sendMessage(S.toGreen("成功购买 " + a * Settings.points + " 成长值"));
                     } else {
-                        player.sendMessage(S.toPrefixRed("余额不足"));
+                        player.sendMessage(S.toRed("余额不足"));
                     }
                     return true;
                 }
@@ -103,7 +103,7 @@ public class VIPCommand implements CommandExecutor {
             }
             if (args[0].equals("rank")) {
                 List<String> result = PlayerData.getRank(10);
-                player.sendMessage(S.toPrefixYellow("成长值排名"));
+                player.sendMessage(S.toYellow("成长值排名"));
                 for (int i = 0; i < 10; i++) {
                     if (result.size() <= i) break;
                     player.sendMessage(S.toGreen(result.get(i) + ": "
@@ -119,7 +119,7 @@ public class VIPCommand implements CommandExecutor {
     }
 
     private void sendHelp(Player player, String label) {
-        player.sendMessage(S.toPrefixGreen("VIP帮助菜单"));
+        player.sendMessage(S.toGreen("VIP帮助菜单"));
         player.sendMessage(VIPType.yVIP.getName() + S.toGreen("(365天)价格: " + Settings.yVIPPrice));
         player.sendMessage(VIPType.mVIP.getName() + S.toGreen("(30)价格: " + Settings.mVIPPrice));
         player.sendMessage(S.toGreen("成长值(" + Settings.points + ")价格: " + Settings.pointsPrice));
@@ -139,6 +139,6 @@ public class VIPCommand implements CommandExecutor {
             player.sendMessage(S.toAqua("剩余天数: " + PlayerData.getRemainDays(player.getName())));
             player.sendMessage(S.toAqua("升级所需: " + PlayerData.getLvlReqPoints(player.getName())));
         }
-        player.sendMessage(S.toPrefixGreen("输入 /vip help 查看帮助菜单"));
+        player.sendMessage(S.toGreen("输入 /vip help 查看帮助菜单"));
     }
 }

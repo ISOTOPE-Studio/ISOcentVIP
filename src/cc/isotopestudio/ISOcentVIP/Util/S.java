@@ -21,15 +21,11 @@ public class S {
         return String.valueOf(ChatColor.GOLD) + s + ChatColor.RESET;
     }
 
-    public static String toPrefixRed(String s) {
-        return ISOcentVIP.prefix + ChatColor.RED + s + ChatColor.RESET;
+    public static String toYellow(String s) {
+        return String.valueOf(ChatColor.YELLOW) + s + ChatColor.RESET;
     }
 
-    public static String toPrefixGreen(String s) {
-        return ISOcentVIP.prefix + ChatColor.GREEN + s + ChatColor.RESET;
-    }
-
-    public static String toPrefixYellow(String s) {
-        return ISOcentVIP.prefix + ChatColor.YELLOW + s + ChatColor.RESET;
+    public static String toRed(String s) {
+        return String.valueOf(ChatColor.RED) + s + ChatColor.RESET;
     }
 }

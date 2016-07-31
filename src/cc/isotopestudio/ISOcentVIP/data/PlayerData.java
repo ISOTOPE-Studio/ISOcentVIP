@@ -29,8 +29,8 @@ public class PlayerData {
         setRemainDays(playerName, remains + days);
         if (remains + days >= 365) {
             setVIPType(playerName, VIPType.yVIP);
-            if (remains < 365) {
-                addPoints(playerName, Settings.yVIPGift);
+            if (days >= 365) {
+                addPoints(playerName, Settings.yVIPGift * (days % 365));
                 return true;
             }
         } else
