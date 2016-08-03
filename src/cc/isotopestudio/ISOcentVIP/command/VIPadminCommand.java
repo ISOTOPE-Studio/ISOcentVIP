@@ -44,9 +44,9 @@ public class VIPadminCommand implements CommandExecutor {
                 PlayerData.addDays(args[1], points);
                 return true;
             }
-            if (args[0].equalsIgnoreCase("setpoints") && args.length > 2) {
+            if (args[0].equalsIgnoreCase("addpoints") && args.length > 2) {
                 int points = Integer.parseInt(args[2]);
-                PlayerData.setPoints(args[1], points);
+                PlayerData.addPoints(args[1], points);
                 return true;
             }
             if (args[0].equalsIgnoreCase("info")) {
@@ -62,7 +62,7 @@ public class VIPadminCommand implements CommandExecutor {
     private void sendHelpPage1(CommandSender player, String label) {
         player.sendMessage(S.toGreen("帮助菜单 第 1 页"));
         player.sendMessage(S.toGreen("/" + label + " info <玩家名字>") + S.toGray(" - ") + S.toGold("查看玩家信息"));
-        player.sendMessage(S.toGreen("/" + label + " adddays <玩家名字> <天数>") + S.toGray(" - ") + S.toGold("设置玩家成长值"));
-        player.sendMessage(S.toGreen("/" + label + " setpoints <玩家名字> <成长点>") + S.toGray(" - ") + S.toGold("设置玩家成长值"));
+        player.sendMessage(S.toGreen("/" + label + " adddays <玩家名字> <天数>") + S.toGray(" - ") + S.toGold("添加玩家剩余天数"));
+        player.sendMessage(S.toGreen("/" + label + " addpoints <玩家名字> <成长点>") + S.toGray(" - ") + S.toGold("添加玩家成长值"));
     }
 }

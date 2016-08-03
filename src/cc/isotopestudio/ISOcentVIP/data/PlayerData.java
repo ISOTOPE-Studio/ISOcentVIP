@@ -30,7 +30,7 @@ public class PlayerData {
         if (remains + days >= 365) {
             setVIPType(playerName, VIPType.yVIP);
             if (days >= 365) {
-                addPoints(playerName, Settings.yVIPGift * (days % 365));
+                addPoints(playerName, Settings.yVIPGift * (days / 365));
                 return true;
             }
         } else
@@ -109,7 +109,9 @@ public class PlayerData {
     }
 
     public static int getLvlReqPoints(String playerName) {
-        return getNextLvlPoints(playerName) - getPoints(playerName);
+        if (getVIPType(playerName) == VIPType.mVIP)
+            return getNextLvlPoints(playerName) - getPoints(playerName);
+        return 0;
     }
 
     public static int getNextLvlPoints(String playerName) {

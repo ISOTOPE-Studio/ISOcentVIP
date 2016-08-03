@@ -123,9 +123,9 @@ public class VIPCommand implements CommandExecutor {
         player.sendMessage(VIPType.yVIP.getName() + S.toGreen("(365天)价格: " + Settings.yVIPPrice));
         player.sendMessage(VIPType.mVIP.getName() + S.toGreen("(30)价格: " + Settings.mVIPPrice));
         player.sendMessage(S.toGreen("成长值(" + Settings.points + ")价格: " + Settings.pointsPrice));
-        player.sendMessage(S.toGreen("/" + label + " buy month [月数]") + S.toGray(" - ") + S.toGold("设置玩家成长值"));
-        player.sendMessage(S.toGreen("/" + label + " buy year [年数]") + S.toGray(" - ") + S.toGold("设置玩家成长值"));
-        player.sendMessage(S.toGreen("/" + label + " buy point <份数>") + S.toGray(" - ") + S.toGold("购买成长值(1份" + Settings.points + "点)"));
+        player.sendMessage(S.toGreen("/" + label + " buy month [月数]") + S.toGray(" - ") + S.toGold("购买" + VIPType.mVIP));
+        player.sendMessage(S.toGreen("/" + label + " buy year [年数]") + S.toGray(" - ") + S.toGold("购买" + VIPType.yVIP));
+        player.sendMessage(S.toGreen("/" + label + " buy point <份数>") + S.toGray(" - ") + S.toGold("购买成长值"));
         player.sendMessage(S.toGreen("/" + label + " rank") + S.toGray(" - ") + S.toGold("查看排名"));
 
     }
@@ -139,6 +139,6 @@ public class VIPCommand implements CommandExecutor {
             player.sendMessage(S.toAqua("剩余天数: " + PlayerData.getRemainDays(player.getName())));
             player.sendMessage(S.toAqua("升级所需: " + PlayerData.getLvlReqPoints(player.getName())));
         }
-        player.sendMessage(S.toGreen("输入 /vip help 查看帮助菜单"));
+        // player.sendMessage(S.toGreen("输入 /vip help 查看帮助菜单"));
     }
 }
