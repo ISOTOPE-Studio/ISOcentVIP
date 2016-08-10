@@ -55,6 +55,15 @@ public class VIPCommand implements CommandExecutor {
                         if (PlayerData.addDays(player.getName(), 30 * month)) {
                             player.sendMessage(S.toGreen("升级年费VIP"));
                             player.sendMessage(S.toGreen("获得" + Settings.yVIPGift + "成长值奖励"));
+                            if (!PlayerData.ifChecked(args[1])) {
+                                PlayerData.addPoints(args[1], Settings.yVIPPoints);
+                                PlayerData.setChecked(args[1]);
+                            }
+                        } else {
+                            if (!PlayerData.ifChecked(args[1])) {
+                                PlayerData.addPoints(args[1], Settings.mVIPPoints);
+                                PlayerData.setChecked(args[1]);
+                            }
                         }
                         player.sendMessage(S.toGreen("成功购买"));
                     } else {
@@ -74,6 +83,10 @@ public class VIPCommand implements CommandExecutor {
                         PlayerData.addDays(player.getName(), 365 * year);
                         player.sendMessage(S.toGreen("获得" + Settings.yVIPGift + "成长值奖励"));
                         player.sendMessage(S.toGreen("成功购买"));
+                        if (!PlayerData.ifChecked(args[1])) {
+                            PlayerData.addPoints(args[1], Settings.yVIPPoints);
+                            PlayerData.setChecked(args[1]);
+                        }
                     } else {
                         player.sendMessage(S.toRed("余额不足"));
                     }

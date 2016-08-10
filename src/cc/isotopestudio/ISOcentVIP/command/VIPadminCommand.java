@@ -1,9 +1,9 @@
 package cc.isotopestudio.ISOcentVIP.command;
 
-import cc.isotopestudio.ISOcentVIP.util.S;
 import cc.isotopestudio.ISOcentVIP.data.PlayerData;
 import cc.isotopestudio.ISOcentVIP.data.Settings;
 import cc.isotopestudio.ISOcentVIP.type.VIPType;
+import cc.isotopestudio.ISOcentVIP.util.S;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,6 +42,22 @@ public class VIPadminCommand implements CommandExecutor {
             if (args[0].equalsIgnoreCase("adddays") && args.length > 2) {
                 int points = Integer.parseInt(args[2]);
                 PlayerData.addDays(args[1], points);
+                switch (PlayerData.getVIPType(args[1])) {
+                    case mVIP:
+                        if (!PlayerData.ifChecked(args[1])) {
+                            PlayerData.addPoints(args[1], Settings.mVIPPoints);
+                            PlayerData.setChecked(args[1]);
+                        }
+                        break;
+                    case yVIP:
+                        if (!PlayerData.ifChecked(args[1])) {
+                            PlayerData.addPoints(args[1], Settings.yVIPPoints);
+                            PlayerData.setChecked(args[1]);
+                        }
+                        break;
+                    case NONE:
+                        break;
+                }
                 return true;
             }
             if (args[0].equalsIgnoreCase("addpoints") && args.length > 2) {
@@ -51,6 +67,11 @@ public class VIPadminCommand implements CommandExecutor {
             }
             if (args[0].equalsIgnoreCase("info")) {
                 sender.sendMessage(Settings.info());
+                return true;
+            }
+            if (args[0].equalsIgnoreCase("delete")) {
+                PlayerData.delete(args[1]);
+                sender.sendMessage(S.toRed("成功删除"));
                 return true;
             }
             sendHelpPage1(sender, label);
@@ -64,5 +85,6 @@ public class VIPadminCommand implements CommandExecutor {
         player.sendMessage(S.toGreen("/" + label + " info <玩家名字>") + S.toGray(" - ") + S.toGold("查看玩家信息"));
         player.sendMessage(S.toGreen("/" + label + " adddays <玩家名字> <天数>") + S.toGray(" - ") + S.toGold("添加玩家剩余天数"));
         player.sendMessage(S.toGreen("/" + label + " addpoints <玩家名字> <成长点>") + S.toGray(" - ") + S.toGold("添加玩家成长值"));
+        player.sendMessage(S.toGreen("/" + label + " delete <玩家名字>") + S.toGray(" - ") + S.toGold("清空玩家数据"));
     }
 }

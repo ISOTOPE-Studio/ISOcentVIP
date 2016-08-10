@@ -44,7 +44,8 @@ public class SqlManager {
                             " player CHAR(20) NOT NULL PRIMARY KEY," +
                             " points INT NOT NULL," +
                             " days INT NOT NULL," +
-                            " type TEXT NOT NULL" +
+                            " type TEXT NOT NULL," +
+                            " checked BOOLEAN NOT NULL" +
                             " );");
             ISOcentVIP.statement.executeUpdate(
                     "CREATE TABLE IF NOT EXISTS info(" +

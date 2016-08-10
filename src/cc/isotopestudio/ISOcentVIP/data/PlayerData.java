@@ -1,6 +1,7 @@
 package cc.isotopestudio.ISOcentVIP.data;
 
 import cc.isotopestudio.ISOcentVIP.type.VIPType;
+import org.bukkit.Bukkit;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +12,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static cc.isotopestudio.ISOcentVIP.ISOcentVIP.*;
+import static cc.isotopestudio.ISOcentVIP.ISOcentVIP.c;
+import static cc.isotopestudio.ISOcentVIP.ISOcentVIP.statement;
 
 /**
  * Created by Mars on 5/27/2016.
@@ -60,11 +62,12 @@ public class PlayerData {
             ResultSet res = statement.executeQuery("SELECT * FROM vip WHERE player=" + "\"" + playerName + "\"" + ";");
             PreparedStatement statement;
             if (!res.next()) {
-                statement = c.prepareStatement("INSERT INTO vip VALUES(?, ?, ?, ?);");
+                statement = c.prepareStatement("INSERT INTO vip VALUES(?, ?, ?, ?, ?);");
                 statement.setString(1, playerName);
                 statement.setString(2, points + "");
                 statement.setString(3, "0");
                 statement.setString(4, VIPType.NONE.toString());
+                statement.setString(5, "false");
             } else {
                 statement = c.prepareStatement("UPDATE vip SET points=? WHERE player=?;");
                 statement.setString(1, points + "");
@@ -76,15 +79,23 @@ public class PlayerData {
         if (getLvl(playerName) != lvl) {
             switch (getVIPType(playerName)) {
                 case mVIP: {
-                    perms.playerAddGroup(playerName, "world", Settings.mVIPGroup.get(getLvl(playerName)));
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                            "manuadd " + playerName + " " + Settings.mVIPGroup.get(getLvl(playerName) - 1));
+                    //perms.playerAddGroup(playerName, "world", Settings.mVIPGroup.get(getLvl(playerName)));
+                    System.out.print("move player to " + Settings.mVIPGroup.get(getLvl(playerName) - 1));
                     break;
                 }
                 case yVIP: {
-                    perms.playerAddGroup(playerName, "world", Settings.yVIPGroup.get(getLvl(playerName)));
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                            "manuadd " + playerName + " " + Settings.yVIPGroup.get(getLvl(playerName) - 1));
+                    //perms.playerAddGroup(playerName, "world", Settings.yVIPGroup.get(getLvl(playerName)));
+                    System.out.print("move player to " + Settings.yVIPGroup.get(getLvl(playerName) - 1));
                     break;
                 }
                 case NONE: {
-                    perms.playerAddGroup(playerName, "world", Settings.defaultgroup);
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                            "manuadd " + playerName + " " + Settings.defaultgroup);
+                    //perms.playerAddGroup(playerName, "world", Settings.defaultgroup);
                     break;
                 }
             }
@@ -102,23 +113,24 @@ public class PlayerData {
             return maxLvl;
 
         int pointReq = Settings.level.get(0);
-        while (++lvl < maxLvl - 1 && points >= pointReq) {
+        while (++lvl < maxLvl && points >= pointReq) {
             pointReq = Settings.level.get(lvl + 1);
         }
         return lvl;
     }
 
     public static int getLvlReqPoints(String playerName) {
-        if (getVIPType(playerName) == VIPType.mVIP)
-            return getNextLvlPoints(playerName) - getPoints(playerName);
-        return 0;
+        int nextLvlPoints = getNextLvlPoints(playerName);
+        if (nextLvlPoints == -1)
+            return 0;
+        return nextLvlPoints - getPoints(playerName);
     }
 
     public static int getNextLvlPoints(String playerName) {
         int lvl = getLvl(playerName);
-        if (Settings.level.size() <= lvl + 1)
+        if (Settings.level.size() < lvl + 1)
             return -1;
-        return Settings.level.get(lvl + 1);
+        return Settings.level.get(lvl);
     }
 
     public static void setRemainDays(String playerName, int days) {
@@ -126,11 +138,12 @@ public class PlayerData {
             ResultSet res = statement.executeQuery("SELECT * FROM vip WHERE player=" + "\"" + playerName + "\"" + ";");
             PreparedStatement statement;
             if (!res.next()) {
-                statement = c.prepareStatement("INSERT INTO vip VALUES(?, ?, ?, ?);");
+                statement = c.prepareStatement("INSERT INTO vip VALUES(?, ?, ?, ?, ?);");
                 statement.setString(1, playerName);
                 statement.setString(2, 0 + "");
                 statement.setString(3, days + "");
                 statement.setString(4, VIPType.NONE.toString());
+                statement.setString(5, "0");
             } else {
                 statement = c.prepareStatement("UPDATE vip SET days=? WHERE player=?;");
                 statement.setString(1, days + "");
@@ -167,11 +180,12 @@ public class PlayerData {
             ResultSet res = statement.executeQuery("SELECT * FROM vip WHERE player=" + "\"" + playerName + "\"" + ";");
             PreparedStatement statement;
             if (!res.next()) {
-                statement = c.prepareStatement("INSERT INTO vip VALUES(?, ?, ?, ?);");
+                statement = c.prepareStatement("INSERT INTO vip VALUES(?, ?, ?, ?, ?);");
                 statement.setString(1, playerName);
                 statement.setString(2, 0 + "");
                 statement.setString(3, "0");
                 statement.setString(4, type.toString());
+                statement.setString(5, "0");
             } else {
                 statement = c.prepareStatement("UPDATE vip SET type=? WHERE player=?;");
                 statement.setString(1, type.toString() + "");
@@ -192,6 +206,43 @@ public class PlayerData {
             return VIPType.valueOf(res.getString("type"));
         } catch (SQLException e) {
             return VIPType.NONE;
+        }
+    }
+
+    public static void setChecked(String playerName) {
+        try {
+            ResultSet res = statement.executeQuery("SELECT * FROM vip WHERE player=" + "\"" + playerName + "\"" + ";");
+            PreparedStatement statement;
+            if (!res.next()) {
+                return;
+            } else {
+                statement = c.prepareStatement("UPDATE vip SET checked=? WHERE player=?;");
+                statement.setString(1, "1");
+                statement.setString(2, playerName);
+            }
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean ifChecked(String playerName) {
+        ResultSet res;
+        try {
+            res = statement.executeQuery("SELECT * FROM vip WHERE player=" + "\"" + playerName + "\"" + ";");
+            return res.next() && res.getBoolean("checked");
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public static void delete(String playerName) {
+        try {
+            PreparedStatement statement = c.prepareStatement("DELETE FROM vip WHERE player=?;");
+            statement.setString(1, playerName);
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
