@@ -209,7 +209,7 @@ public class PlayerData {
         }
     }
 
-    public static void setChecked(String playerName) {
+    public static void setChecked(String playerName, boolean value) {
         try {
             ResultSet res = statement.executeQuery("SELECT * FROM vip WHERE player=" + "\"" + playerName + "\"" + ";");
             PreparedStatement statement;
@@ -217,7 +217,10 @@ public class PlayerData {
                 return;
             } else {
                 statement = c.prepareStatement("UPDATE vip SET checked=? WHERE player=?;");
-                statement.setString(1, "1");
+                if (value)
+                    statement.setString(1, "1");
+                else
+                    statement.setString(1, "0");
                 statement.setString(2, playerName);
             }
             statement.execute();

@@ -48,10 +48,8 @@ public class DailyUpdateTask extends BukkitRunnable {
                 statement.executeUpdate(
                         "INSERT INTO info VALUES (\"today\",\"" + today + "\");");
                 for (String player : PlayerData.getVIPs(VIPType.mVIP)) {
-                    if (!PlayerData.ifChecked(player)) {
-                        PlayerData.addPoints(player, Settings.mVIPPoints);
-                        PlayerData.setChecked(player);
-                    }
+                    PlayerData.addPoints(player, Settings.mVIPPoints);
+                    PlayerData.setChecked(player, true);
                     int days = PlayerData.getRemainDays(player);
                     days--;
                     if (days <= 0) {
@@ -61,10 +59,8 @@ public class DailyUpdateTask extends BukkitRunnable {
                         PlayerData.setRemainDays(player, days);
                 }
                 for (String player : PlayerData.getVIPs(VIPType.yVIP)) {
-                    if (!PlayerData.ifChecked(player)) {
-                        PlayerData.addPoints(player, Settings.yVIPPoints);
-                        PlayerData.setChecked(player);
-                    }
+                    PlayerData.addPoints(player, Settings.yVIPPoints);
+                    PlayerData.setChecked(player, true);
                     int days = PlayerData.getRemainDays(player);
                     days--;
                     if (days <= 0) {

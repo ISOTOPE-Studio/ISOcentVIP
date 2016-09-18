@@ -46,13 +46,13 @@ public class VIPadminCommand implements CommandExecutor {
                     case mVIP:
                         if (!PlayerData.ifChecked(args[1])) {
                             PlayerData.addPoints(args[1], Settings.mVIPPoints);
-                            PlayerData.setChecked(args[1]);
+                            PlayerData.setChecked(args[1], true);
                         }
                         break;
                     case yVIP:
                         if (!PlayerData.ifChecked(args[1])) {
                             PlayerData.addPoints(args[1], Settings.yVIPPoints);
-                            PlayerData.setChecked(args[1]);
+                            PlayerData.setChecked(args[1], true);
                         }
                         break;
                     case NONE:
