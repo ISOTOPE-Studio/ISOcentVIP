@@ -35,9 +35,6 @@ yvip:
   - group4
   - group5
 
-#默认权限组
-defaultgroup: group
-
 #每日降低成长值
 decrease: 2
 

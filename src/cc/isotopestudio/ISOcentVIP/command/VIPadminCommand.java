@@ -58,11 +58,13 @@ public class VIPadminCommand implements CommandExecutor {
                     case NONE:
                         break;
                 }
+                sender.sendMessage(S.toAqua("给玩家" + args[1] + "添加了 " + points + "天VIP"));
                 return true;
             }
             if (args[0].equalsIgnoreCase("addpoints") && args.length > 2) {
                 int points = Integer.parseInt(args[2]);
                 PlayerData.addPoints(args[1], points);
+                sender.sendMessage(S.toAqua("给玩家" + args[1] + "添加了 " + points + "点"));
                 return true;
             }
             if (args[0].equalsIgnoreCase("info")) {

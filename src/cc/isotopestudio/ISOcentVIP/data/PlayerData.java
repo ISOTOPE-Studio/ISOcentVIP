@@ -1,7 +1,9 @@
 package cc.isotopestudio.ISOcentVIP.data;
 
+import cc.isotopestudio.ISOcentVIP.ISOcentVIP;
 import cc.isotopestudio.ISOcentVIP.type.VIPType;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 import static cc.isotopestudio.ISOcentVIP.ISOcentVIP.c;
+import static cc.isotopestudio.ISOcentVIP.ISOcentVIP.perms;
 import static cc.isotopestudio.ISOcentVIP.ISOcentVIP.statement;
 
 /**
@@ -79,25 +82,36 @@ public class PlayerData {
         if (getLvl(playerName) != lvl) {
             switch (getVIPType(playerName)) {
                 case mVIP: {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                            "manuadd " + playerName + " " + Settings.mVIPGroup.get(getLvl(playerName) - 1));
-                    //perms.playerAddGroup(playerName, "world", Settings.mVIPGroup.get(getLvl(playerName)));
+                    // TODO: migrate to PermissionEX
+                    // pex user <user> group add <group>
+                    // pex user <user> group remove <group>
+                    removeVIPGroup(playerName);
+                    perms.playerAddGroup("world", Bukkit.getOfflinePlayer(playerName), Settings.mVIPGroup.get(getLvl(playerName) - 1));
                     System.out.print("move player to " + Settings.mVIPGroup.get(getLvl(playerName) - 1));
                     break;
                 }
                 case yVIP: {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                            "manuadd " + playerName + " " + Settings.yVIPGroup.get(getLvl(playerName) - 1));
-                    //perms.playerAddGroup(playerName, "world", Settings.yVIPGroup.get(getLvl(playerName)));
+                    removeVIPGroup(playerName);
+                    perms.playerAddGroup("world", Bukkit.getOfflinePlayer(playerName), Settings.yVIPGroup.get(getLvl(playerName) - 1));
                     System.out.print("move player to " + Settings.yVIPGroup.get(getLvl(playerName) - 1));
                     break;
                 }
                 case NONE: {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                            "manuadd " + playerName + " " + Settings.defaultgroup);
-                    //perms.playerAddGroup(playerName, "world", Settings.defaultgroup);
+                    removeVIPGroup(playerName);
                     break;
                 }
+            }
+        }
+    }
+
+    private static void removeVIPGroup(String playerName) {
+        OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
+        String[] groups = perms.getPlayerGroups("world", player);
+        for (String group : groups) {
+            if (Settings.mVIPGroup.contains(group)) {
+                perms.playerRemoveGroup("world", player, group);
+            } else if (Settings.yVIPGroup.contains(group)) {
+                perms.playerRemoveGroup("world", player, group);
             }
         }
     }

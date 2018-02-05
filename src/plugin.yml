@@ -4,7 +4,7 @@ main: cc.isotopestudio.ISOcentVIP.ISOcentVIP
 author: Mars
 description: ISOcentVIP
 website: http://isotopestudio.cc
-version: 1.0.5
+version: 1.0.6
 depend: [PlayerPoints]
 softdepend: [PlaceholderAPI]
 commands:

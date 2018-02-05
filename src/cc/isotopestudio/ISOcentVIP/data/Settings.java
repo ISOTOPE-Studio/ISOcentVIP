@@ -19,7 +19,6 @@ public class Settings {
     public static int decrease;
     public static int pointsPrice;
     public static int points;
-    public static String defaultgroup;
     public static List<Integer> level;
     public static List<String> mVIPGroup;
     public static List<String> yVIPGroup;
@@ -33,7 +32,6 @@ public class Settings {
                 ", decrease=" + decrease +
                 ", pointsPrice=" + pointsPrice +
                 ", points=" + points +
-                ", defaultgroup='" + defaultgroup + '\'' +
                 ", level=" + level +
                 ", mVIPGroup=" + mVIPGroup +
                 ", yVIPGroup=" + yVIPGroup +
@@ -49,7 +47,6 @@ public class Settings {
         decrease = plugin.getConfig().getInt("decrease", 2);
         pointsPrice = plugin.getConfig().getInt("pointsprice", 0);
         points = plugin.getConfig().getInt("points", 0);
-        defaultgroup = plugin.getConfig().getString("defaultgroup");
         level = new ArrayList<>();
         mVIPGroup = plugin.getConfig().getStringList("mvip.group");
         yVIPGroup = plugin.getConfig().getStringList("yvip.group");
